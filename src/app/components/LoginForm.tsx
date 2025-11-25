@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./LoginForm.module.css";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -32,9 +34,9 @@ export default function LoginForm() {
           .catch(() => ({ message: "Login failed" }));
         setError(data?.message || "Login failed");
       } else {
-        const data = await res.json().catch(() => ({}));
-        // TODO: handle success (set cookie, redirect, update UI)
-        console.log("Login success", data);
+        await res.json().catch(() => ({}));
+        // On success redirect to /now (adjust if you want to store tokens first)
+        router.push("/now");
       }
     } catch (err) {
       // log for debugging and show a generic message
