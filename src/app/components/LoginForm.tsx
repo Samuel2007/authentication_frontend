@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./LoginForm.module.css";
 
+const URL_DEV = "http://localhost:4000";
+
 export default function LoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -15,17 +17,17 @@ export default function LoginForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    if (!email || !password) {
+    if (!username || !password) {
       setError("Please enter email and password");
       return;
     }
     setLoading(true);
     try {
       // Example: POST to /api/login — adapt on backend
-      const res = await fetch("/api/login", {
+      const res = await fetch(`${URL_DEV}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (!res.ok) {
@@ -58,11 +60,11 @@ export default function LoginForm() {
       <div className={styles.field}>
         <label htmlFor="email">Email</label>
         <input
-          id="email"
+          id="username"
           className={styles.input}
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
       </div>
